@@ -14,12 +14,21 @@ NativeMessageBoxTestAudioProcessorEditor::NativeMessageBoxTestAudioProcessorEdit
     : AudioProcessorEditor (&p), audioProcessor (p), openDialogButtons(buttonTexts.size())
 {
     int h = 30;
-    int offsetY = 10;
+    int offset = 10;
+    
+    iconTypeComboBox.reset(new ComboBox);
+    addAndMakeVisible(iconTypeComboBox.get());
+    iconTypeComboBox->setBounds(offset, offset, 200, h);
+    iconTypeComboBox->addItem("NoIcon", 1);
+    iconTypeComboBox->addItem("QuestionIcon", 2);
+    iconTypeComboBox->addItem("WarningIcon", 3);
+    iconTypeComboBox->addItem("InfoIcon", 4);
+    iconTypeComboBox->setSelectedItemIndex(0);
+
     for (int i = 0; i < buttonTexts.size(); i++) {
         openDialogButtons[i].reset(new TextButton(buttonTexts[i], buttonTexts[i]));
         addAndMakeVisible(openDialogButtons[i].get());
-        
-        openDialogButtons[i]->setBounds(100, offsetY + (offsetY + h) * i, 200, h);
+        openDialogButtons[i]->setBounds(100, offset + (offset + h) * (i + 1), 200, h);
     }
     
     // reference : https://qiita.com/ring2/items/b024084be6cccc9e2601
@@ -27,10 +36,11 @@ NativeMessageBoxTestAudioProcessorEditor::NativeMessageBoxTestAudioProcessorEdit
         openDialogButtons[i]->onClick = [i, this]() {
             
             MessageBoxIconType iconType;
-            if (i % 4 == 0) iconType = MessageBoxIconType::NoIcon;
-            if (i % 4 == 1) iconType = MessageBoxIconType::QuestionIcon;
-            if (i % 4 == 2) iconType = MessageBoxIconType::WarningIcon;
-            if (i % 4 == 3) iconType = MessageBoxIconType::InfoIcon;
+            int comboIndex = iconTypeComboBox->getSelectedItemIndex();
+            if (comboIndex == 0) iconType = MessageBoxIconType::NoIcon;
+            else if (comboIndex == 1) iconType = MessageBoxIconType::QuestionIcon;
+            else if (comboIndex == 2) iconType = MessageBoxIconType::WarningIcon;
+            else if (comboIndex == 3) iconType = MessageBoxIconType::InfoIcon;
 
             String title(buttonTexts[i]);
             String msg(TRANS(title + "\n" + "this is message"));
@@ -70,6 +80,7 @@ NativeMessageBoxTestAudioProcessorEditor::~NativeMessageBoxTestAudioProcessorEdi
     for (int i = 0; i < buttonTexts.size(); i++) {
         openDialogButtons[i] = nullptr;
     }
+    iconTypeComboBox = nullptr;
 }
 
 //==============================================================================

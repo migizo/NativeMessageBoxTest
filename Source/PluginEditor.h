@@ -26,6 +26,8 @@ public:
     void resized() override;
 
 private:
+    unique_ptr<ComboBox> iconTypeComboBox;
+    
     vector<string> buttonTexts = {
         "showAsync",
         "showMessageBoxAsync",
