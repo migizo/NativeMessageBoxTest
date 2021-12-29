@@ -45,8 +45,8 @@ NativeMessageBoxTestAudioProcessorEditor::NativeMessageBoxTestAudioProcessorEdit
             String title(buttonTexts[i]);
             String msg(TRANS(title + "\n" + "this is message"));
                         
-            function<void(int)> callback = [](int buttonIndex) {
-                DBG("result : " << buttonIndex);
+            function<void(int)> callback = [](int result) {
+                DBG("result : " << result);
             };
             
             if (buttonTexts[i] == "showAsync") {
